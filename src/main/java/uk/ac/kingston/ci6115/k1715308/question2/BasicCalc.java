@@ -19,6 +19,16 @@ interface SciCalc {
     double doubleOperation(double value);
 }
 
+interface Calc<T> {
+
+    T operation(T n1, T... n2);
+}
+
+interface Calculator<T, K, V> {
+
+    T operation(K n1, V n2);
+}
+
 interface SciCalcMultiple {
 
     double[] multipleDoubleOperation(double value);
