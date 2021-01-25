@@ -9,6 +9,10 @@ package uk.ac.kingston.ci6115.k1715308.question2;
  *
  * @author k1715308
  */
-public interface BasicCalc {
-    int intOperation(int x, int y);
+public interface SciCalc {
+    double doubleOperation(double value);
+}
+
+interface SciCalcMultiple {
+    double[] multipleDoubleOperation(double value);
 }
