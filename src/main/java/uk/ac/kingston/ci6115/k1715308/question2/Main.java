@@ -33,7 +33,17 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        List<List<String>> NumberList = readData();
+        List<List<String>> Numbers = readData();
+        List<Double> NumberList = new ArrayList<>();
+        List<Integer> NumberListInt = new ArrayList<>();
+        
+        //clean up the List: single dimensional list and convert values from String to Integer
+        for(List<String> number : Numbers){
+            for(String num : number){
+                NumberList.add(Double.parseDouble(num));
+                NumberListInt.add(Integer.parseInt(num));
+            }
+        }
         System.out.println(NumberList); //[1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610]
 
         
@@ -54,9 +64,31 @@ public class Main {
         SciCalc degreesToRadians = (angleDeg) -> (angleDeg * Math.PI) / 180;
         SciCalcMultiple radiansSinCosTan = (angleRad) -> new double[] {Math.sin(angleRad), Math.cos(angleRad), Math.tan(angleRad)};
         
-        getSciCalcResult(80, radiansToDegrees); //
-        getSciCalcResult(20, degreesToRadians);
-        getSciMultipleResult(5, radiansSinCosTan);
+        getSciCalcResult(80, radiansToDegrees); //4583.6623610
+        getSciCalcResult(20, degreesToRadians); //0.34906585
+        getSciMultipleResult(5, radiansSinCosTan); //[-0.95892, 0.28366, -3.380515]
+        
+        
+        //c) Java Streams - Mean and Standard Deviation
+        /*
+        Count:              15
+        Sum:                1596
+        Mean:               106.4
+        Variance:           28817.04
+        Standard Deviation: 169.75582464234
+        */
+        double sum = NumberList.stream().mapToDouble(num -> num).sum();
+        double mean = NumberList.stream().mapToDouble(num -> num).average().orElse(0.0);
+        double variance = NumberList.stream().map(num -> num - mean).map(num -> num*num).mapToDouble(num -> num).average().getAsDouble();
+        
+        int sumInt = NumberListInt.stream().reduce(0, (n1, n2) -> n1 + n2);
+        System.out.println(sumInt);
+        System.out.println(sumInt / NumberListInt.size());
+
+        System.out.println(sum);
+        System.out.println(mean);
+        System.out.println(variance);
+        System.out.println(Math.sqrt(variance));
     }
     
     public static void getBasicCalcResult(int n1, int n2, BasicCalc calc) {
