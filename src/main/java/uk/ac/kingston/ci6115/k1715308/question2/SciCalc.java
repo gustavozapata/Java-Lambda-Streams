@@ -13,6 +13,7 @@ public interface SciCalc {
     double doubleOperation(double value);
 }
 
+//returns an array of values e.g. sin, cos, tan
 interface SciCalcMultiple {
     double[] multipleDoubleOperation(double value);
 }
