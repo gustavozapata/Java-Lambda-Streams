@@ -70,6 +70,7 @@ public class Main {
         
         
         //c) Java Streams - Mean and Standard Deviation
+        //Mark: you can link up more than one intermediate operation so the results of one feed into the next.
         /*
         Count:              15
         Sum:                1596
