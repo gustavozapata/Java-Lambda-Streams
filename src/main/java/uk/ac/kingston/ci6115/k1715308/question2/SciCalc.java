@@ -11,15 +11,28 @@ import java.util.List;
  *
  * @author k1715308
  */
+
+//SciCalc is a marker interface
 public interface SciCalc {
-    double doubleOperation(double value);
+ /*
+    A marker interface is an interface that has no methods or constants inside it.
+    It provides run-time type information about objects, so the compiler and JVM have additional information about the object.
+    A marker interface is also called a tagging interface.
+ */
 }
 
+//These are functional interfaces that extends the marker interface
+interface SciCalcInt extends SciCalc {
+    int operation(int x, int y);
+}
+interface SciCalcDouble extends SciCalc {
+    double operation(double value);
+}
 //returns an array of values e.g. sin, cos, tan
-interface SciCalcMultiple {
-    double[] multipleDoubleOperation(double value);
+interface SciCalcArray extends SciCalc {
+    double[] operation(double values);
 }
-
-interface SciCalcStream {
-    double doubleOperation(List<Double> list);
+//takes a list, processes it and returns a value
+interface SciCalcList extends SciCalc {
+    double operation(List<Double> list);
 }
