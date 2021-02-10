@@ -16,10 +16,11 @@ import java.util.Arrays;
  * @author k1715308
  */
 public class Main {
-
+    
     //read the data from the csv file
-    public static List<List<String>> readData() {
+    public static List<Double> readDataFromFile() {
         List<List<String>> records = new ArrayList<>();
+        List<Double> numbers = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("data.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -27,22 +28,20 @@ public class Main {
                 String[] values = line.replaceAll("[^\\d,]", "").split(",");
                 records.add(Arrays.asList(values));
             }
+            //flatten the list<list<string>> to a single dimensional list
+            records.forEach((number) -> {
+                number.forEach((num) -> {
+                    numbers.add(Double.parseDouble(num));
+                });
+            });
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
-        return records;
+        return numbers;
     }
 
     public static void main(String[] args) {
-        List<List<String>> Numbers = readData();
-        List<Double> NumberList = new ArrayList<>();
-        
-        //clean up the List (flatten to single dimensional list) and convert values from String to Double
-        Numbers.forEach((number) -> {
-            number.forEach((num) -> {
-                NumberList.add(Double.parseDouble(num));
-            });
-        });
+        List<Double> NumberList = readDataFromFile();
 
         //a) Basic Calculations
         System.out.println("\na) Basic Calculations");
@@ -51,10 +50,10 @@ public class Main {
         SciCalcInt multiply = (n1, n2) -> n1 * n2;
         SciCalcInt divide = (n1, n2) -> n1 / n2;
 
-        getSciCalcIntResult(3, 7, add);//10
-        getSciCalcIntResult(6, 3, subtract);//3
-        getSciCalcIntResult(2, 8, multiply);//16
-        getSciCalcIntResult(80, 4, divide);//20
+        System.out.println(getIntResult(3, 7, add));//10
+        System.out.println(getIntResult(6, 3, subtract));//3
+        System.out.println(getIntResult(2, 8, multiply));//16
+        System.out.println(getIntResult(80, 4, divide));//20
 
         
         //b) Scientific Calculations
@@ -63,9 +62,9 @@ public class Main {
         SciCalcDouble degreesToRadians = (angleDeg) -> (angleDeg * Math.PI) / 180;
         SciCalcArray radiansSinCosTan = (angleRad) -> new double[] {Math.sin(angleRad), Math.cos(angleRad), Math.tan(angleRad)};
 
-        getSciCalcDoubleResult(80, radiansToDegrees); //4583.6623610
-        getSciCalcDoubleResult(20, degreesToRadians); //0.34906585
-        getSciCalcArrayResult(5, radiansSinCosTan); //[-0.95892, 0.28366, -3.380515]
+        System.out.println(getDoubleResult(80, radiansToDegrees)); //4583.6623610
+        System.out.println(getDoubleResult(20, degreesToRadians)); //0.34906585
+        System.out.println(Arrays.toString(getArrayResult(5, radiansSinCosTan))); //[-0.95892, 0.28366, -3.380515]
         
         
         //c) Java Streams - Mean and Standard Deviation
@@ -80,27 +79,22 @@ public class Main {
         Standard Deviation: 169.75582464234 | it is the square root of the Variance
         */
         SciCalcList mean = (list) -> list.stream().mapToDouble(num -> num).average().orElse(0.0);
-        SciCalcList standardDeviation = (list) -> Math.sqrt(list.stream().map(num -> num - getSciCalcListResult(list, mean)).map(num -> num*num).mapToDouble(num -> num).average().orElse(0.0));
-        System.out.println(getSciCalcListResult(NumberList, mean));
-        System.out.println(getSciCalcListResult(NumberList, standardDeviation));
-        // getSciCalcDoubleResult(getSciCalcListResult(NumberList, varianceFromList), standardDeviation);
+        SciCalcList standardDeviation = (list) -> Math.sqrt(list.stream().map(num -> num - getResultFromList(list, mean)).map(num -> num*num).mapToDouble(num -> num).average().orElse(0.0));
+        
+        System.out.println(getResultFromList(NumberList, mean));
+        System.out.println(getResultFromList(NumberList, standardDeviation));
     }
 
-    public static void getSciCalcIntResult(int n1, int n2, SciCalcInt calc) {
-        int result = calc.operation(n1, n2);
-        System.out.println(result);
+    public static int getIntResult(int n1, int n2, SciCalcInt calc) {
+        return calc.operation(n1, n2);
     }
-    public static void getSciCalcDoubleResult(double value, SciCalcDouble calc) {
-        double result = calc.operation(value);
-        System.out.println(result);
+    public static double getDoubleResult(double value, SciCalcDouble calc) {
+        return calc.operation(value);
     }
-    public static void getSciCalcArrayResult(double values, SciCalcArray calc) {
-        for (double val : calc.operation(values)) {
-            System.out.print(val + "  ");
-        }
+    public static double[] getArrayResult(double values, SciCalcArray calc) {
+        return calc.operation(values);
     }
-    public static double getSciCalcListResult(List<Double> list, SciCalcList calc){
-        double result = calc.operation(list);
-        return result;
+    public static double getResultFromList(List<Double> list, SciCalcList calc){
+        return calc.operation(list);
     }
 }
