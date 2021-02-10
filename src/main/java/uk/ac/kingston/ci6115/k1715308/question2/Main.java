@@ -80,7 +80,7 @@ public class Main {
         Standard Deviation: 169.75582464234 | it is the square root of the Variance
         */
         SciCalcList meanFromList = (list) -> list.stream().mapToDouble(num -> num).average().orElse(0.0);
-        SciCalcList varianceFromList = (list) -> list.stream().map(num -> num - getSciCalcListResult(NumberList, meanFromList)).map(num -> num*num).mapToDouble(num -> num).average().getAsDouble();
+        SciCalcList varianceFromList = (list) -> list.stream().map(num -> num - getSciCalcListResult(list, meanFromList)).map(num -> num*num).mapToDouble(num -> num).average().getAsDouble();
         SciCalcDouble standardDeviation = Math::sqrt;
         System.out.println(getSciCalcListResult(NumberList, meanFromList));
         getSciCalcDoubleResult(getSciCalcListResult(NumberList, varianceFromList), standardDeviation);
