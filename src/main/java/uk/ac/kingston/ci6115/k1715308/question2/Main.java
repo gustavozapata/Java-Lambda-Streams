@@ -91,8 +91,8 @@ public class Main {
     public static double getDoubleResult(double value, SciCalcDouble calc) {
         return calc.operation(value);
     }
-    public static double[] getArrayResult(double values, SciCalcArray calc) {
-        return calc.operation(values);
+    public static double[] getArrayResult(double value, SciCalcArray calc) {
+        return calc.operation(value);
     }
     public static double getResultFromList(List<Double> list, SciCalcList calc){
         return calc.operation(list);
